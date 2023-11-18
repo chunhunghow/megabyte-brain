@@ -1,6 +1,6 @@
 
 
-Official implementation of the paper [Sequential Modelling for Medical Image Segmentation] (https://doi.org/10.1101/2023.11.01.565075)
+Official implementation of the paper [Sequential Modelling for Medical Image Segmentation](https://doi.org/10.1101/2023.11.01.565075)
 
 This work adapts MEGABYTE and Pix2Seq to perform medical image segmentation.
 
