@@ -1,0 +1,2 @@
+from MEGABYTE_pytorch.megabyte import MEGABYTE_Encoder
+from MEGABYTE_pytorch.decoder import MEGABYTE_Decoder

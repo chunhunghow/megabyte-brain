@@ -1,0 +1,90 @@
+
+
+task:
+
+        source1:
+
+                vocab_id : 3 # task token in [0, 99)
+                name: 'instance_segmentation'
+                tokens_registered: 2
+                max_seq_len : 65536 #currently set to 500 , as a start for det task stacks of 5 x100
+                coord_vocab_shift : 1000 # classes are 100-999
+                segm_class_shift: 500 #semantic classes can be from 500-999, other classification task label 100-499
+                noise_bbox_weight : 1.0
+                eos_token_weight : 0.00001
+                quantization_bins : 200 #testing 2 pixels 1 bin (im_size // 2)
+                top_k: 0
+                top_p: 0.4
+                temperature: 1.0
+                loss :
+
+        source2:
+
+                vocab_id : 4 # task token in [0, 99)
+                name: 'semantic_segmentation'
+                segm_class_shift : 510
+                tokens_registered: 4
+                loss:
+
+model:
+        vocab_size : 2000 
+        hidden_dim : 256
+        size: 256 # this sets the image size for input, also the max_seq_len in decoder, make sure dataset also matches
+        patch_size_sqrt: 8 #local model
+        in_channels : 3 #if use pretrained
+        #model_weight: 'lightning_logs/0d0us9vf/checkpoints/epoch=60-step=67283.ckpt'
+        model_weight:
+        loss :
+                        #loss : 'focal@2'
+
+
+dataset:
+
+
+        source1:
+                name : 'lesion_segmentation'
+                img_size : 256
+                batch_size : 1 #1 for test
+                num_workers: 8
+                max_seq_len : 500 #currently set to 500 , as a start for det task stacks of 5 x100
+                train_path : '/home/data_repo/INSTANCE_ICH/data2D/images/train'
+                val_path : '/home/data_repo/INSTANCE_ICH/data2D/images/val'
+                test_path : '/home/data_repo/physionetICH/data2D/images/all'
+                eps : 0.001
+
+        source2:
+                name: 'tissue_segmentation'
+                batch_size: 1 #1 for test
+                num_workers: 8
+                img_size: 256 # strictly for image size 256 and 1 channel, due to computation memory
+                train:
+                    input: '/home/data_repo/braintissue/labels_norm_train/ct_norm'
+                    label: ['/home/data_repo/braintissue/labels_norm_train/csf_alt', 
+                           '/home/data_repo/braintissue/labels_norm_train/gm_alt',
+                           '/home/data_repo/braintissue/labels_norm_train/wm_alt']
+                    split: [0, 0.95]  #1 if not spliting
+                    size: 256
+                    augment: True #shuffle or SubsetRandomSampler    
+
+                val:
+                    input: '/home/data_repo/braintissue/labels_norm_train/ct_norm'
+                    label: ['/home/data_repo/braintissue/labels_norm_train/csf_alt', 
+                           '/home/data_repo/braintissue/labels_norm_train/gm_alt',
+                           '/home/data_repo/braintissue/labels_norm_train/wm_alt']
+                    split: [0.95, 1]  #1 if not spliting
+                    size: 256
+                    random: True #shuffle or SubsetRandomSampler   
+                    augment: False
+
+                test:
+                    input: '/home/data_repo/braintissue/labels_norm_test/ct_norm'
+                    label: ['/home/data_repo/braintissue/labels_norm_test/csf_alt', 
+                           '/home/data_repo/braintissue/labels_norm_test/gm_alt',
+                           '/home/data_repo/braintissue/labels_norm_test/wm_alt']
+                    split:   # all test
+                    size: 256
+                    random: True #shuffle or SubsetRandomSampler    
+                    augment: False
+
+train:
+        epoch : 50

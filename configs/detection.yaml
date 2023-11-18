@@ -1,0 +1,48 @@
+
+
+task:
+
+        vocab_id : 1 # task token in [0, 99)
+        name: 'object_detection'
+        vocab_size : 2000 
+        max_seq_len : 65536  #currently set to 500 , as a start for det task stacks of 5 x100
+        coord_vocab_shift : 1000 # classes are 100-999
+        noise_bbox_weight : 1.0
+        eos_token_weight : 0.00001
+        class_label_corruption : 'rand_n_fake_cls'
+        quantization_bins : 200 #testing 2 pixels 1 bin (im_size // 2)
+        top_k: 0
+        top_p: 0.4
+        temperature: 1.0
+        max_instances_per_image_test: 100 
+        loss :
+                #focal@2
+
+model:
+        vocab_size : 2000 
+        hidden_dim : 256
+        size: 256 # this sets the image size for input, also the max_seq_len in decoder, make sure dataset also matches
+        patch_size_sqrt: 8 #local model
+        #backbone_weight : 'pretrained_weights/backbone/focalnet_tiny_srf_maskrcnn_1x.pth'
+        in_channels : 3 #if use pretrained
+        #model_weight: 'lightning_logs/2so0mmbf/checkpoints/epoch=50-step=167331.ckpt'
+        #model_weight: 'MegaByte-Pix2Seq/kdxffkwv/checkpoints/epoch=49-step=123050.ckpt' #solely trained
+        model_weight: 
+        loss :
+                        #loss : 'focal@2'
+
+
+
+dataset:
+
+        name : 'bhx_detection'
+        img_size : 256
+        batch_size : 8 #suggest bs / num of task
+        num_workers: 8
+        train_path : '/home/data_repo/cq500/processed_png/images/train'
+        val_path : '/home/data_repo/cq500/processed_png/images/val'
+        test_path : '/home/data_repo/cq500/processed_png/images/test'
+        cls_names : ['chronic','epidural','intraparenchymal','intraventricular','subarachnoid','subdural']
+
+train:
+        epoch : 50

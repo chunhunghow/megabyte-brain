@@ -1,0 +1,43 @@
+
+
+task:
+        vocab_id : 2 # task token in [0, 99)
+        name: 'classification'
+        top_k: 0
+        top_p: 0.4
+        temperature: 1.0
+        cls_vocab_shift : 200 # classes are 100-999
+        tokens_registered: 
+        max_seq_len : 65536 #currently set to 500 , as a start for det task stacks of 5 x100
+        eos_token_weight : 0.00001
+        loss :
+                #loss : 'focal@2'
+
+model:
+
+        vocab_size : 2000 
+        hidden_dim : 256
+        size: 256 # this sets the image size for input, also the max_seq_len in decoder, make sure dataset also matches
+        patch_size_sqrt: 8 #local model
+        #backbone_weight : 'pretrained_weights/backbone/focalnet_tiny_srf_maskrcnn_1x.pth'
+        in_channels : 3 #if use pretrained
+        #model_weight: 'lightning_logs/2so0mmbf/checkpoints/epoch=50-step=167331.ckpt'
+        model_weight: 'MegaByte-Pix2Seq/fvi0z7r9/checkpoints/epoch=12-step=31993.ckpt'
+        #model_weight:
+        loss :
+                        #loss : 'focal@2'
+
+
+dataset:
+        name : 'cq500_classification'
+        img_size : 256
+        batch_size : 8
+        num_workers: 8
+        label_path: '/home/data_repo/cq500/raw_zip/reads.csv'
+        train_path : '/home/data_repo/cq500/processed_png/images/train'
+        val_path : '/home/data_repo/cq500/processed_png/images/val'
+        test_path : '/home/data_repo/cq500/processed_png/images/test'
+
+
+train:
+        epoch : 50

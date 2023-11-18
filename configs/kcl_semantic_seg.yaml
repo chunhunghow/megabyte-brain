@@ -1,0 +1,50 @@
+task:
+        vocab_id : 4 # task token in [0, 99)
+        name: 'semantic_segmentation'
+        vocab_size : 2000 
+        max_seq_len : 500 #currently set to 500 , as a start for det task stacks of 5 x100
+        loss:
+        patch_size_sqrt : 8 
+        segm_class_shift : 0 #if for single task then 0 or None
+        tokens_registered:  # None for single task
+
+model:
+        model_weight:
+        patch_size_sqrt : 8 
+        backbone_weight:
+
+dataset:
+    name: 'tissue_segmentation'
+    batch_size: 8
+    img_size: 256 # strictly for image size 256 and 1 channel, due to computation memory
+    train:
+        input: '/home/data_repo/braintissue/labels_norm_train/ct_norm'
+        label: ['/home/data_repo/braintissue/labels_norm_train/csf_alt', 
+               '/home/data_repo/braintissue/labels_norm_train/gm_alt',
+               '/home/data_repo/braintissue/labels_norm_train/wm_alt']
+        split: [0, 0.95]  #1 if not spliting
+        size: 256
+        augment: True #shuffle or SubsetRandomSampler    
+
+    val:
+        input: '/home/data_repo/braintissue/labels_norm_train/ct_norm'
+        label: ['/home/data_repo/braintissue/labels_norm_train/csf_alt', 
+               '/home/data_repo/braintissue/labels_norm_train/gm_alt',
+               '/home/data_repo/braintissue/labels_norm_train/wm_alt']
+        split: [0.95, 1]  #1 if not spliting
+        size: 256
+        random: True #shuffle or SubsetRandomSampler   
+        augment: False
+
+    test:
+        input: '/home/data_repo/braintissue/labels_norm_test/ct_norm'
+        label: ['/home/data_repo/braintissue/labels_norm_test/csf_alt', 
+               '/home/data_repo/braintissue/labels_norm_test/gm_alt',
+               '/home/data_repo/braintissue/labels_norm_test/wm_alt']
+        split:   # all test
+        size: 256
+        random: True #shuffle or SubsetRandomSampler    
+        augment: False
+
+train:
+        epoch : 50
