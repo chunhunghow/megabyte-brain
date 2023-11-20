@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "megabyte_brain"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "1.22.0"
+torch = {url = "https://download.pytorch.org/whl/cu116/torch-1.12.1%2Bcu116-cp38-cp38-linux_x86_64.whl"}
+torchvision = {url = "https://download.pytorch.org/whl/cu116/torchvision-0.13.1%2Bcu116-cp38-cp38-linux_x86_64.whl"}
+#torchvision = "^0.15.1"
+pydicom = "^2.3.0"
+wandb = "^0.13.4"
+matplotlib = "^3.6.1"
+tqdm = "^4.64.1"
+opencv-python = "^4.6.0.66"
+albumentations = "^1.3.0"
+pynrrd = "^1.0.0"
+gdcm = "^1.1"
+pylibjpeg = "^1.4.0"
+pylibjpeg-libjpeg = "^1.3.2"
+pytorch-lightning = "^1.8.0.post1"
+omegaconf = "^2.2.3"
+einops = "^0.6.0"
+nibabel = "^4.0.2"
+torchmetrics = "^0.11.4"
+ml-collections = "^0.1.1"
+pandas = "1.5.1"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
